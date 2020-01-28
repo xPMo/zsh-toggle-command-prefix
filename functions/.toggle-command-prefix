@@ -1,0 +1,22 @@
+#!/usr/bin/env zsh
+# $1: the text to insert
+# $2: the text to remove (a glob)
+# fall back to 'sudo (-$flag -...)'
+if ! [[ $1 ]]; then
+	set -- 'sudo ' 'sudo[[:space:]]##(-[^[:space:]]##[[:space:]])#'
+fi
+emulate -L zsh
+setopt extendedglob
+local end_cmd=$'\n''|(#s)|;|\|\||&&'
+local -a match
+LBUFFER=${LBUFFER%(#b)(${~end_cmd})([[:space:]]#)(if|else|while|do|until)([[:space:]]##)(*)}
+if (( ! $#match )); then
+	# repeat without if/else/...
+	LBUFFER=${LBUFFER%(#b)(${~end_cmd})()()([[:space:]]#)((#e)|[^[:space:]]*)}
+fi
+LBUFFER=$LBUFFER${(j::)match[1,4]}
+if [[ $match[5] = ${${2+$~2}:-$1}* ]]; then
+	LBUFFER+=${match[5]##${${2+$~2}:-$1}}
+else
+	LBUFFER+=$1$match[5]
+fi
