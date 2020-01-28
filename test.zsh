@@ -7,6 +7,10 @@ tests=(
 	'sudo basic command' 'basic command'
 	'after ; command' 'after ; sudo command'
 	'after ; sudo command' 'after ; command'
+	'after; command' 'after; sudo command'
+	'after; sudo command' 'after; command'
+	'after;command' 'after;sudo command'
+	'after;sudo command' 'after;command'
 	'after ; if command' 'after ; if sudo command'
 	'after ; if sudo command' 'after ; if command'
 )
@@ -20,7 +24,7 @@ tests+=(
 )
 for test out in $tests; do
 	LBUFFER=$test
-	.toggle-command-prefix 'sudo '
+	.toggle-command-prefix
 	if [[ $LBUFFER != $out ]]; then
 		print "test failed: $test"
 		print "Should be  : $out"
