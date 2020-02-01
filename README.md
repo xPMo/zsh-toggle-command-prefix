@@ -20,3 +20,25 @@ For example,
 `foo bar`, since `-u` and `-g` take arguments,
 while `--shell` does not.
 
+## Examples:
+
+Launch a command with `i3-msg` instead of in the current session.
+
+```zsh
+.toggle-i3exec(){
+	.toggle-command-prefix 'i3-msg -- exec -- ' 'i3-msg' '(--|exec)'
+}
+zle -N .toggle-i3exec
+bindkey '^[i' .toggle-i3exec
+```
+
+Launch a command with `nice`
+
+```zsh
+.toggle-nice(){
+	.toggle-command-prefix 'nice -n10' 'nice' '(-n?|--adjustment=)*' '(-n|--adjustment)'
+}
+zle -N .toggle-nice
+bindkey '^[n' .toggle-nice
+```
+
