@@ -1,22 +1,69 @@
 #!/usr/bin/env zsh
 emulate -L zsh
 setopt extendedglob
+
+local -a reply
+local REPLY{,2}
+split-shell-arguments
+
+local end_cmd=$'(\n##''|\||\|\||&&|;)'
+local -i end_loc=2+"${${(@)reply[0,REPLY]}[(I)$~end_cmd]}"
+local -i new_loc=end_loc
+if [[ "$reply[new_loc]" = (if|else|while|do|until) ]]; then
+	new_loc+=2
+	end_loc+=2
+fi
+
 # $1: the text to insert
-# $2: the text to remove (a glob)
-# fall back to 'sudo (-$flag -...)'
+# $2: (pattern) the command to remove
+# $3: (pattern) remove if found after the command
+# $4: (pattern) remove with following arg if found after command
+#
 if ! [[ $1 ]]; then
-	set -- 'sudo ' 'sudo[[:space:]]##(-[^[:space:]]##[[:space:]])#'
+	if (($+functions[_sudo])); then
+		local temp_fn_args=$functions[_arguments]
+		local -a _sudo_args sudo_args sudo_args_gnu sudo_flags
+		_arguments(){ _sudo_args=(${@:2}) }
+		_sudo 2>/dev/null
+		_sudo_args=(${_sudo_args:#*_command_names*})
+		sudo_args_gnu=(${${${(M)_sudo_args:#*\]::*}#*\)}%%(|-)\[*})
+		sudo_args=(${${${(M)_sudo_args:#*\]:[^:]*}#*\)}%%\[*})
+		sudo_flags=(${${${_sudo_args:#*\]:*}#*\)}%%\[*})
+		print -l - $sudo_flags '===' $sudo_args '==='
+		set -- 'sudo ' 'sudo' \
+			"(${(j:|:)sudo_flags}|(${(j:|:)${(@)sudo_args%+}}|${(j:|:)sudo_args_gnu})*)" \
+			"(${(j:|:)${(@)sudo_args%[=+]}})*"
+		print -l "$@"
+		functions[_arguments]=$temp_fn_args
+	else
+		set -- 'sudo ' 'sudo'
+	fi
 fi
-local end_cmd=$'\n''|(#s)|;|\|\||&&'
-local -a match
-LBUFFER=${LBUFFER%(#b)(${~end_cmd})([[:space:]]#)(if|else|while|do|until)([[:space:]]##)(*)}
-if (( ! $#match )); then
-	# repeat without if/else/...
-	LBUFFER=${LBUFFER%(#b)(${~end_cmd})()()([[:space:]]#)((#e)|[^[:space:]]*)}
-fi
-LBUFFER=$LBUFFER${(j::)match[1,4]}
-if [[ $match[5] = ${${2+$~2}:-$1}* ]]; then
-	LBUFFER+=${match[5]##${${2+$~2}:-$1}}
+insert=$1
+cmdmatch=$2
+shift 2
+# (Q) removes one layer of quotes
+if [[ ${(Q)reply[new_loc]} = $~cmdmatch ]]; then
+	# found command, remove it
+	while (($#reply > new_loc )); do
+		case $reply[new_loc+2] in
+		$~1)
+			((new_loc+=2))
+			continue ;;
+		$~2)
+			echo $2
+			((new_loc+=4))
+			continue ;;
+		esac
+		break
+	done
+	if ((REPLY > new_loc + 1)); then
+		((CURSOR = CURSOR - $#reply[new_loc] - $#reply[new_loc+1]))
+	else
+		((CURSOR = ${#reply[0,new_loc-1]} + 1))
+	fi
+	BUFFER="${(j::)reply[0,new_loc-1]}${(j::)reply[new_loc+2,-1]}"
 else
-	LBUFFER+=$1$match[5]
+	((CURSOR += $#1))
+	BUFFER=${(j::)reply[0,new_loc-1]}$insert${(j::)reply[new_loc,-1]}
 fi

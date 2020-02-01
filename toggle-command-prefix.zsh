@@ -4,7 +4,7 @@
 0="${${(M)0:#/*}:-$PWD/$0}"
 [[ $zsh_loaded_plugins[-1] != */*toggle-command-prefix && -z $fpath[(r)${0:h}] ]] &&
 	fpath+=("${0:h}/functions")
-autoload -Uz .toggle-command-prefix
+autoload -Uz .toggle-command-prefix split-shell-arguments
 # }}}
 
 zle -N .toggle-command-prefix
