@@ -36,7 +36,7 @@ Launch a command with `nice`
 
 ```zsh
 .toggle-nice(){
-	.toggle-command-prefix 'nice -n10' 'nice' '(-n?|--adjustment=)*' '(-n|--adjustment)'
+	.toggle-command-prefix 'nice -n10 ' 'nice' '(-n?|--adjustment=)*' '(-n|--adjustment)'
 }
 zle -N .toggle-nice
 bindkey '^[n' .toggle-nice
