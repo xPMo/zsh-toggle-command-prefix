@@ -8,7 +8,7 @@ autoload -Uz .toggle-command-prefix split-shell-arguments
 
 zle -N .toggle-command-prefix
 
-for map in command viins vicmd; do
+for map in emacs viins vicmd; do
 	bindkey -M $map '^[s' .toggle-command-prefix
 done
 
