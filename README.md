@@ -25,6 +25,7 @@ while `--shell` does not.
 | Binding | Prefix Inserted | Prefix Matched |
 | --- | --- | --- |
 | Alt-s | `sudo ` | `sudo` followed by any number of supported flags known by `_sudo` completion |
+| Alt-g | `noglob ` | `noglob` |
 
 ## Examples:
 

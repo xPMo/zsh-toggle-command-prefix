@@ -14,8 +14,12 @@ function .toggle-sudo () {
 
 zle -N .toggle-sudo
 
+function .toggle-noglob () { .toggle-command-prefix 'noglob ' 'noglob' }
+zle -N .toggle-noglob
+
 for map in emacs viins vicmd; do
 	bindkey -M $map '^[s' .toggle-sudo
+	bindkey -M $map '^[g' .toggle-noglob
 done
 
 # vim:foldmethod=marker
