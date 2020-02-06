@@ -1,33 +1,35 @@
 #!/usr/bin/env zsh
 source ./toggle-command-prefix.zsh
+setopt extendedglob
 
 autoload _sudo
 # replacements
 tests=(
-	'basic command' 'sudo basic command'
-	'sudo basic command' 'basic command'
-	'sudo -u user --group=foo basic command' 'basic command'
-	'after ; command' 'after ; sudo command'
-	'after ; sudo command' 'after ; command'
-	'after; command' 'after; sudo command'
-	'after; sudo command' 'after; command'
-	'after;command' 'after;sudo command'
-	'after;sudo command' 'after;command'
-	'after ; if command' 'after ; if sudo command'
-	'after ; if sudo command' 'after ; if command'
+	'basic cmd' 'sudo basic cmd'
+	'sudo basic cmd' 'basic cmd'
+	'sudo -u user --group=foo basic cmd' 'basic cmd'
+	'after ; cmd' 'after ; sudo cmd'
+	'after ; sudo cmd' 'after ; cmd'
+	'after; cmd' 'after; sudo cmd'
+	'after; sudo cmd' 'after; cmd'
+	'after;cmd' 'after;sudo cmd'
+	'after;sudo cmd' 'after;cmd'
+	'after ; if cmd' 'after ; if sudo cmd'
+	'after ; if sudo cmd' 'after ; if cmd'
 )
 
 # false positives
 tests+=(
-	'bad if command' 'sudo bad if command'
-	'sudo bad if command' 'bad if command'
-	'bad sudo command' 'sudo bad sudo command'
-	'sudo bad sudo command' 'bad sudo command'
+	'bad if cmd' 'sudo bad if cmd'
+	'sudo bad if cmd' 'bad if cmd'
+	'bad sudo cmd' 'sudo bad sudo cmd'
+	'sudo bad sudo cmd' 'bad sudo cmd'
 )
+
 for test out in $tests; do
 	BUFFER=$test
-	CURSOR=$#test
-	.toggle-command-prefix
+	integer CURSOR=$#test
+	.toggle-sudo
 	if [[ $BUFFER != $out ]]; then
 		print "test failed: $test"
 		print "Should be  : $out"

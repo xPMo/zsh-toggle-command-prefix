@@ -20,6 +20,12 @@ For example,
 `foo bar`, since `-u` and `-g` take arguments,
 while `--shell` does not.
 
+## Default bindings:
+
+| Binding | Prefix Inserted | Prefix Matched |
+| --- | --- | --- |
+| Alt-s | `sudo ` | `sudo` followed by any number of supported flags known by `_sudo` completion |
+
 ## Examples:
 
 Launch a command with `i3-msg` instead of in the current session.
