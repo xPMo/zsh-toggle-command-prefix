@@ -48,3 +48,28 @@ zle -N .toggle-nice
 bindkey '^[n' .toggle-nice
 ```
 
+## Configuration
+
+Toggle-command-prefix uses `zstyle` settings to control certain behavior.
+
+### CUTBUFFER
+
+If a command is found and removed, the following lookup is done:
+
+```zsh
+zstyle -t :zle:toggle-command-prefix:${removed_text} copy
+```
+
+If the lookup returns true,
+then the remove text is also yanked into the cut buffer for later pasting.
+
+You can use this like so:
+
+```zsh
+# copy by default
+zstyle ':zle:toggle-command-prefix:*' copy true
+# don't copy sudo by itself
+zstyle ':zle:toggle-command-prefix:sudo ' copy false
+# copy sudo followed by any number of other matched flags
+zstyle ':zle:toggle-command-prefix:sudo -*' copy true
+```
