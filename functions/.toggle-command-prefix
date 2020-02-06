@@ -15,7 +15,7 @@ split-shell-arguments
 local end_cmd=$'(\n##''|\||\|\||&&|;)'
 local -i end_loc=2+"${${(@)reply[0,REPLY]}[(I)$~end_cmd]}"
 local -i new_loc=end_loc
-if [[ "$reply[end_loc]" = (if|elif|then|else|while|do|until|\{|\() ]]; then
+if [[ "$reply[end_loc]" = (if|elif|then|else|while|do|until|\{|\(|[[:IDENT:]]##=*) ]]; then
 	end_loc+=2
 fi
 new_loc=end_loc

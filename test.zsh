@@ -16,6 +16,9 @@ tests=(
 	'after;sudo cmd' 'after;cmd'
 	'after ; if cmd' 'after ; if sudo cmd'
 	'after ; if sudo cmd' 'after ; if cmd'
+	'var=val cmd' 'var=val sudo cmd'
+	'var=val sudo cmd' 'var=val cmd'
+	'"var=val" foo' 'sudo "var=val" foo'
 )
 
 # false positives
