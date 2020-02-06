@@ -3,7 +3,7 @@
 # $2: (pattern) the command to remove
 # $3: (optional, pattern) remove if found after the command
 # $4: (optional, pattern) remove with following arg if found after command
-# e.g.:  .toggle-command-prefix 'nice ' 'nice' '--adjustment=*' '(--adjustment|-n)'
+# e.g.:  .toggle-command-prefix 'nice ' 'nice' '(--adjustment=|-n?)*' '(--adjustment|-n)'
 
 emulate -L zsh
 setopt extendedglob
@@ -15,9 +15,12 @@ split-shell-arguments
 local end_cmd=$'(\n##''|\||\|\||&&|;)'
 local -i end_loc=2+"${${(@)reply[0,REPLY]}[(I)$~end_cmd]}"
 local -i new_loc=end_loc
-if [[ "$reply[end_loc]" = (if|elif|then|else|while|do|until|\{|\(|[[:IDENT:]]##=*) ]]; then
+if [[ "$reply[end_loc]" = (if|elif|then|else|while|do|until|\{|\() ]]; then
 	end_loc+=2
 fi
+while [[ "$reply[end_loc]" = [[:IDENT:]]##=* ]]; do
+	end_loc+=2
+done
 new_loc=end_loc
 
 (($# < 2)) && return 1
