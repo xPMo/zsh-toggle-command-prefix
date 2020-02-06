@@ -18,9 +18,6 @@ local -i new_loc=end_loc
 if [[ "$reply[end_loc]" = (if|elif|then|else|while|do|until|\{|\() ]]; then
 	end_loc+=2
 fi
-if [[ "$reply[end_loc]" = command ]]; then
-	end_loc+=2
-fi
 new_loc=end_loc
 
 (($# < 2)) && return 1
