@@ -47,7 +47,9 @@ if [[ ${(Q)reply[new_loc]} = $~cmdmatch ]]; then
 	fi
 	# pattern match on cut text
 	if zstyle -t :zle:toggle-command-prefix:${(j::)reply[end_loc,new_loc+1]} copy; then
-		zle copy-region-as-kill ${(j::)reply[end_loc,new_loc+1]}
+		# copy-region-as-kill "string" should do this, but it seems to be broken
+		killring=("$CUTBUFFER" "${(@)killring[0,-2]}")
+		CUTBUFFER=${(j::)reply[end_loc,new_loc+1]}
 	fi
 	BUFFER="${(j::)reply[0,end_loc-1]}${(j::)reply[new_loc+2,-1]}"
 else
