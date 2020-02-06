@@ -26,6 +26,8 @@ while `--shell` does not.
 | --- | --- | --- |
 | Alt-s | `sudo ` | `sudo` followed by any number of supported flags known by `_sudo` completion |
 | Alt-g | `noglob ` | `noglob` |
+| Alt-i | `nocorrect ` | `nocorrect` |
+| Alt-Shift-c | `command ` | `command` |
 
 ## Examples:
 
