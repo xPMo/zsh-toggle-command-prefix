@@ -13,25 +13,25 @@ function .toggle-sudo () {
 		'-(C|-close-from|g|-group|h|-host|p|-prompt|r|-role|t|-type|T|-command-timeout|U|-other-user|u|-user)'
 }
 
-zle -N .toggle-sudo
+zle -N {,.}toggle-sudo
 
 # Alt-g: toggle 'noglob'
 function .toggle-noglob () { .toggle-command-prefix 'noglob ' 'noglob' }
-zle -N .toggle-noglob
+zle -N {,.}toggle-noglob
 
 # Alt-g: toggle 'nocorrect'
 function .toggle-nocorrect () { .toggle-command-prefix 'nocorrect ' 'nocorrect' }
-zle -N .toggle-nocorrect
+zle -N {,.}toggle-nocorrect
 
 # Alt-C: toggle 'command' (many users have Alt-c bound to fzf-cd-widget)
 function .toggle-command () { .toggle-command-prefix 'command ' 'command' '-[pvV]' }
-zle -N .toggle-command
+zle -N {,.}toggle-command
 
 for map in emacs viins vicmd; do
-	bindkey -M $map '^[s' .toggle-sudo \
-		'^[g' .toggle-noglob \
-		'^[i' .toggle-nocorrect \
-		'^[C' .toggle-command
+	bindkey -M $map '^[s' toggle-sudo \
+		'^[g' toggle-noglob \
+		'^[C' toggle-command \
+		#'^[i' toggle-nocorrect # uncomment to enable nocorrect with alt-i
 done
 
 # vim:foldmethod=marker

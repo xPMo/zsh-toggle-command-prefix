@@ -20,14 +20,14 @@ For example,
 `foo bar`, since `-u` and `-g` take arguments,
 while `--shell` does not.
 
-## Default bindings:
+## Default widgets:
 
-| Binding | Prefix Inserted | Prefix Matched |
-| --- | --- | --- |
-| Alt-s | `sudo ` | `sudo` followed by any number of supported flags known by `_sudo` completion |
-| Alt-g | `noglob ` | `noglob` |
-| Alt-i | `nocorrect ` | `nocorrect` |
-| Alt-Shift-c | `command ` | `command` |
+|Widget | Binding | Prefix Inserted | Prefix Matched |
+| --- | --- | --- | --- |
+| `toggle-sudo` | Alt-s | `sudo ` | `sudo` followed by any number of supported flags known by `_sudo` completion |
+| `toggle-noglob` | Alt-g | `noglob ` | `noglob` |
+| `toggle-nocorrect` | _(not bound)_| `nocorrect ` | `nocorrect` |
+| `toggle-command` | Alt-Shift-c | `command ` | `command` |
 
 ## Examples:
 
