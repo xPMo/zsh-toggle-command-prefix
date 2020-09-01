@@ -27,8 +27,9 @@ zle -N {,.}toggle-nocorrect
 function .toggle-command () { .toggle-command-prefix 'command ' 'command' '-[pvV]' }
 zle -N {,.}toggle-command
 
-for map in emacs viins vicmd; do
-	bindkey -M $map '^[s' toggle-sudo \
+local m
+for m in emacs viins vicmd; do
+	bindkey -M $m '^[s' toggle-sudo \
 		'^[g' toggle-noglob \
 		'^[C' toggle-command \
 		#'^[i' toggle-nocorrect # uncomment to enable nocorrect with alt-i
