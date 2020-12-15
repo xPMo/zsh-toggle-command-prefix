@@ -26,13 +26,13 @@ zle -N {,.}toggle-nocorrect
 # Alt-C: toggle 'command' (many users have Alt-c bound to fzf-cd-widget)
 function .toggle-command () { .toggle-command-prefix 'command ' 'command' '-[pvV]' }
 zle -N {,.}toggle-command
-
-local m
-for m in emacs viins vicmd; do
-	bindkey -M $m '^[s' toggle-sudo \
-		'^[g' toggle-noglob \
-		'^[C' toggle-command \
-		#'^[i' toggle-nocorrect # uncomment to enable nocorrect with alt-i
-done
-
+(){
+	local m
+	for m in emacs viins vicmd; do
+		bindkey -M $m '^[s' toggle-sudo \
+			'^[g' toggle-noglob \
+			'^[C' toggle-command \
+			#'^[i' toggle-nocorrect # uncomment to enable nocorrect with alt-i
+	done
+}
 # vim:foldmethod=marker
