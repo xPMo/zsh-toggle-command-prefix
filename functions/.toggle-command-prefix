@@ -8,6 +8,11 @@
 emulate -L zsh
 setopt extendedglob
 
+if (($#BUFFER == 0)); then
+	zle up-history
+	CURSOR=$#BUFFER  # Assume the last command was the problematic one
+fi
+
 local -a reply
 local REPLY{,2}
 split-shell-arguments
