@@ -59,6 +59,7 @@ if [[ ${(Q)reply[new_loc]} = $~cmdmatch ]]; then
 	fi
 	BUFFER="${(j::)reply[0,end_loc-1]}${(j::)reply[new_loc+2,-1]}"
 else
-	((CURSOR += $#insert))
 	BUFFER=${(j::)reply[0,new_loc-1]}$insert${(j::)reply[new_loc,-1]}
+	((CURSOR += $#insert))
+	:
 fi
